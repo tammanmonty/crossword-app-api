@@ -24,11 +24,15 @@ certifi==2026.1.4
     #   httpcore
     #   httpx
     #   sentry-sdk
+cffi==1.17.1
+    # via cryptography
 click==8.1.8
     # via
     #   rich-toolkit
     #   typer
     #   uvicorn
+cryptography==46.0.4
+    # via -r requirements.in
 dnspython==2.6.1
     # via email-validator
 docutils==0.20.1
@@ -78,6 +82,8 @@ markupsafe==2.1.5
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
+pycparser==2.23
+    # via cffi
 pydantic[email]==2.10.6
     # via
     #   fastapi
@@ -89,6 +95,8 @@ pydantic-settings==2.8.1
     # via -r requirements.in
 pygments==2.19.2
     # via rich
+pymysql==1.1.2
+    # via -r requirements.in
 python-dateutil==2.9.0.post0
     # via botocore
 python-dotenv==1.0.1
@@ -133,6 +141,7 @@ typing-extensions==4.13.2
     # via
     #   annotated-types
     #   anyio
+    #   cryptography
     #   exceptiongroup
     #   fastapi
     #   pydantic

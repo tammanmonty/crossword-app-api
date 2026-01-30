@@ -2,3 +2,5 @@ fastapi[standard]
 sqlalchemy
 boto3
 pydantic_settings
+pymysql
+cryptography

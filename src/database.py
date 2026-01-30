@@ -3,7 +3,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from data_pipeline.config import DATA_URL
 from .config import get_settings
 import boto3
 import json
@@ -46,11 +45,11 @@ def get_database_url():
 
     if settings.env == "LOCAL":
         logger.info(f"Using Local Environment variables for database credentials")
-        return f"mysql+pymysql://{settings.username}:{settings.password}@{settings.host}/{settings.database}"
+        return f"mysql+pymysql://{settings.db_user}:{settings.db_password}@{settings.db_host}:{settings.db_port}/{settings.db_name}"
     else:
         logger.info(f"Using AWS Secrets Manager for database credentials")
         creds = get_secret()
-        return f"mysql+pymsql://{creds['username']:{creds['password']}@{creds['host']}:{creds['port', 3306]}/{creds['dbname']}"
+        return f"mysql+pymysql://{creds['username']}:{creds['password']}@{creds['host']}:{creds['port', 3306]}/{creds['dbname']}"
 
 DATABASE_URL = get_database_url()
 

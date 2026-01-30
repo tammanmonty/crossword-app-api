@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     # AWS
     aws_region: str
     secret_name: str = None
+    use_secrets: bool
 
     # API
     api_host: str
