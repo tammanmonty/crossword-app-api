@@ -4,12 +4,6 @@ import os
 
 class Settings(BaseSettings):
     """Application settings loaded from the environment variables"""
-    # APPLICATION
-    app_name: str
-    app_description: str
-    app_version: str
-    app_author: str
-
     env: str = "DEVELOPMENT"
 
 
