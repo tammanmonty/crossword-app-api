@@ -35,12 +35,12 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="CROSSWORD CLUES API",
     description="API for accessing crossword clues, answers, and definitions",
-    version="1.0.0",
+    version=settings.version,
     author="Tamman Montanaro",
 )
 
 @app.get('/')
-def get_root():
+def base():
     # return {'Hello': 'World'}
     logger.debug("Base Endpoint called")
     return {
@@ -49,13 +49,17 @@ def get_root():
         "docs": "/docs"
     }
 
+@app.get('/healthcheck')
+def healthcheck():
+    logger.debug("Healthcheck Endpoint called")
+    return {
+        "application": "Crossword Clue API",
+        "version": settings.version,
+        "status": "healthy"
+    }
+
 @app.get('/clues', response_model=List[CluesResponse])
-def get_clues(db: Session = Depends(get_db)):
-    # return {
-    #     'clue': 'example clue',
-    #     'answer': 'example answer',
-    #     'definition': 'example definition',
-    #     }
+def clues(db: Session = Depends(get_db)):
     try:
         logger.info(f"Fetching all clues from database")
         clues = db.query(ClueItem).all()
@@ -66,7 +70,21 @@ def get_clues(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-
+@app.get('/clues/{clue_id}', response_model=CluesResponse)
+def clue(clue_id: int, db: Session = Depends(get_db)):
+    try:
+        logger.info(f"Fetching clue {clue_id} from database")
+        clue = db.query(ClueItem).get(clue_id)
+        if clue is None:
+            logger.warning(f"Clue {clue_id} not found in database")
+            raise HTTPException(status_code=404, detail=f"ClueId {clue_id} not found")
+        logger.info(f"Successfully retrieved clue {clue_id} from database")
+        return clue
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching clue on clueId: {clue_id}: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal Server error while fetching clue")
 
 
 

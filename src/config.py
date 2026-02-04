@@ -5,7 +5,7 @@ import os
 class Settings(BaseSettings):
     """Application settings loaded from the environment variables"""
     env: str = "DEVELOPMENT"
-
+    version: str
 
     # DATABASE
     db_host: str
